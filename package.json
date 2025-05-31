@@ -1,0 +1,20 @@
+{
+  "name": "graphtheory",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.7",
+    "@tweenjs/tween.js": "^25.0.0",
+    "tailwindcss": "^4.1.7"
+  }
+}
