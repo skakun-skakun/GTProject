@@ -1,21 +1,21 @@
 export class MouseHandler {
-    public target1: any;
+    public target: any;
     constructor() {
-        this.target1 = null;
+        this.target = null;
     }
 
-    setTarget1(target: any) {
-        this.target1 = target;
+    setTarget(target: any) {
+        this.target = target;
     }
 
-    removeTarget1() {
-        this.target1 = null;
+    removeTarget() {
+        this.target = null;
     }
 
-    updateTarget1Coords(coords: any, canv: HTMLCanvasElement) {
-        if (this.target1 !== null) {
-            this.target1.x = coords.x * 100 / canv.width;
-            this.target1.y = coords.y * 100 / canv.height;
+    updateTargetCoords(coords: any, canv: HTMLCanvasElement) {
+        if (this.target !== null) {
+            this.target.x = coords.x * 100 / canv.width;
+            this.target.y = coords.y * 100 / canv.height;
         }
     }
 }

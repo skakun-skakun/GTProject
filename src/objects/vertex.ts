@@ -5,12 +5,14 @@ export class Vertex {
     public name: string;
     public color: string;
     constructor(name: string, x: number = -1, y: number = -1) {
-        this.x = x;
-        this.y = y;
         if (x === -1)
             this.x = Math.floor(    Math.random() * 70)+5;
+        else
+            this.x = x;
         if (y === -1)
             this.y = Math.floor(Math.random() * 90)+5;
+        else
+            this.y = y;
         this.radius = 10;
         this.name = name;
         this.color = "#0857bf";
@@ -25,7 +27,7 @@ export class Vertex {
     }
 
     doesIntersect(canv: HTMLCanvasElement, x: number, y: number): boolean {
-        return Math.pow(x-this.relativeX(canv), 2) + Math.pow(y-this.relativeY(canv), 2) <= Math.pow(this.radius, 2);
+        return Math.pow(x-this.relativeX(canv), 2) + Math.pow(y-this.relativeY(canv), 2) <= Math.pow(this.radius*2.5, 2);
     }
 
     render(canv: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
