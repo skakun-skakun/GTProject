@@ -32,12 +32,22 @@ const resetMode = function() {
 
 let mode = editModes.MoveVertex;
 
-const graph = new Graph([], []);
+const vertices = [...Array(6).keys()].map((i) => new Vertex('V'+i));
+const edges = [
+    new Edge(vertices[2], vertices[0]),
+    new Edge(vertices[2], vertices[1]),
+    new Edge(vertices[2], vertices[3]),
+    new Edge(vertices[3], vertices[4]),
+    new Edge(vertices[3], vertices[5]),
+];
+
+const graph = new Graph(vertices, edges);
 
 const draw = function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     graph.render(canvas, ctx);
 }
+
 
 for (const buttonId in buttons) {
     buttons[buttonId].addEventListener("click", () => {
@@ -179,4 +189,10 @@ resize();
 window.addEventListener('resize', resize);
 
 draw();
+setTimeout(() => {
+    console.log(graph.vertices);
+    const DFSPath = graph.BFS(graph.vertices[Math.floor(Math.random()*graph.vertices.length)]);
+    DFSPath.forEach((ver, ind) => {setTimeout(() => {ver.color = "#ff0000"; draw(); console.log("Ebal " + ver.name)}, ind*1000);});
+    setTimeout(() => {DFSPath.forEach((v) => v.color = "#0857bf"); draw()}, DFSPath.length*1000);
+}, 10000);
 // setInterval(draw, 10);
