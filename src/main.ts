@@ -18,7 +18,16 @@ enum editModes {
 
 let mode = editModes.MoveVertex;
 
-const graph = new Graph([], []);
+const vertices = [...Array(6).keys()].map((i) => new Vertex('V'+i));
+const edges = [
+    new Edge(vertices[2], vertices[0]),
+    new Edge(vertices[2], vertices[1]),
+    new Edge(vertices[2], vertices[3]),
+    new Edge(vertices[3], vertices[4]),
+    new Edge(vertices[3], vertices[5]),
+];
+
+const graph = new Graph(vertices, edges);
 
 const draw = function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -27,7 +36,7 @@ const draw = function () {
 
 addVertex.addEventListener("click", () => {
     // const v = graph.vertices[Math.floor(Math.random() * graph.vertices.length)];
-    graph.vertices.push(new Vertex('new'));
+    graph.vertices.push(new Vertex('V'+graph.vertices.length));
     // graph.edges.push(new Edge(v, vertices[vertices.length - 1]));
     draw();
 })
@@ -121,4 +130,10 @@ resize();
 window.addEventListener('resize', resize);
 
 draw();
+setTimeout(() => {
+    console.log(graph.vertices);
+    const DFSPath = graph.BFS(graph.vertices[Math.floor(Math.random()*graph.vertices.length)]);
+    DFSPath.forEach((ver, ind) => {setTimeout(() => {ver.color = "#ff0000"; draw(); console.log("Ebal " + ver.name)}, ind*1000);});
+    setTimeout(() => {DFSPath.forEach((v) => v.color = "#0857bf"); draw()}, DFSPath.length*1000);
+}, 10000);
 // setInterval(draw, 10);

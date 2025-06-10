@@ -25,7 +25,7 @@ export class Vertex {
     }
 
     doesIntersect(canv: HTMLCanvasElement, x: number, y: number): boolean {
-        return Math.pow(x-this.relativeX(canv), 2) + Math.pow(y-this.relativeY(canv), 2) <= Math.pow(this.radius, 2);
+        return Math.pow(x-this.relativeX(canv), 2) + Math.pow(y-this.relativeY(canv), 2) <= Math.pow(this.radius*2, 2);
     }
 
     render(canv: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
