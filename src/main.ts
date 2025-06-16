@@ -12,6 +12,8 @@ const buttons = [
     document.getElementById("addEdge"),
     document.getElementById("removeVertex"),
     document.getElementById("removeEdge"),
+    document.getElementById("bfs"),
+    document.getElementById("dfs"),
 ]
 
 enum editModes {
@@ -19,7 +21,9 @@ enum editModes {
     CreateVertex = 1,
     CreateEdge = 2,
     RemoveVertex = 3,
-    RemoveEdge = 4
+    RemoveEdge = 4,
+    BFS =  5,
+    DFS = 6,
 }
 
 const mouseHandler = new MouseHandler();
@@ -32,16 +36,20 @@ const resetMode = function() {
 
 let mode = editModes.MoveVertex;
 
-const vertices = [...Array(6).keys()].map((i) => new Vertex('V'+i));
-const edges = [
-    new Edge(vertices[2], vertices[0]),
-    new Edge(vertices[2], vertices[1]),
-    new Edge(vertices[2], vertices[3]),
-    new Edge(vertices[3], vertices[4]),
-    new Edge(vertices[3], vertices[5]),
-];
+// const vertices = [...Array(9).keys()].map((i) => new Vertex('V'+i));
+// const edges = [
+//     new Edge(vertices[0], vertices[1]),
+//     new Edge(vertices[0], vertices[3]),
+//     new Edge(vertices[0], vertices[5]),
+//     new Edge(vertices[0], vertices[7]),
+//     new Edge(vertices[1], vertices[2]),
+//     new Edge(vertices[3], vertices[4]),
+//     new Edge(vertices[5], vertices[6]),
+//     new Edge(vertices[7], vertices[8]),
+// ];
 
-const graph = new Graph(vertices, edges);
+// const graph = new Graph(vertices, edges);
+const graph = new Graph([], [])
 
 const draw = function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -68,7 +76,7 @@ for (const buttonId in buttons) {
 
 canvas.addEventListener("mousedown", (event: MouseEvent) => {
     if (mode === editModes.CreateVertex) {
-        graph.vertices.push(new Vertex('new', event.x*100/canvas.width, event.y*100/canvas.height));
+        graph.vertices.push(new Vertex('new'+graph.vertices.length, event.x*100/canvas.width, event.y*100/canvas.height));
         draw();
         return;
     }
@@ -112,6 +120,18 @@ canvas.addEventListener("mousedown", (event: MouseEvent) => {
                     }
                     break;
                 }
+                case editModes.BFS: {
+                    const BFSPath = graph.BFS(v);
+                    BFSPath.forEach((ver, ind) => {setTimeout(() => {ver.color = "#00ff00"; draw()}, ind*500)});
+                    setTimeout(() => {BFSPath.forEach((v) => v.color = "#0857bf"); draw()}, BFSPath.length*500);
+                    break;
+                }
+                case editModes.DFS: {
+                    const DFSPath = graph.DFS(v);
+                    DFSPath.forEach((ver, ind) => {setTimeout(() => {ver.color = "#00ff00"; draw()}, ind*500)});
+                    setTimeout(() => {DFSPath.forEach((v) => v.color = "#0857bf"); draw()}, DFSPath.length*500);
+                    break;
+                }
                 default:
                     break;
             }
@@ -119,48 +139,6 @@ canvas.addEventListener("mousedown", (event: MouseEvent) => {
             break;
         }
     }
-    // if (mode === editModes.MoveVertex) {
-    //     for (const v of graph.vertices) {
-    //         if (v.doesIntersect(canvas, event.x, event.y)) {
-    //             mouseHandler.settarget(v);
-    //             break;
-    //         }
-    //     }
-    // } else if (mode === editModes.CreateVertex) {
-    //     // let broke = false;
-    //     for (const v of graph.vertices) {
-    //         if (v.doesIntersect(canvas, event.x, event.y)) {
-    //             if (mouseHandler.target !== null) {
-    //                 if (v === mouseHandler.target) {
-    //                     v.color = "#0857bf";
-    //                     mouseHandler.removetarget();
-    //                 } else if (! graph.edges.map((e) => {return e.vertices.includes(v) && e.vertices.includes(mouseHandler.target)}).includes(true)) {
-    //                     graph.edges.push(new Edge(mouseHandler.target, v));
-    //                     v.color = "#0857bf";
-    //                     // addEdge?.classList.toggle("bg-blue-300!");
-    //                     // mode = editModes.MoveVertex;
-    //                 }
-    //                 mouseHandler.target.color = "#0857bf";
-    //                 mouseHandler.removetarget();
-    //             } else {
-    //                 mouseHandler.settarget(v);
-    //                     v.color = "#ffee6e";
-    //             }
-    //             draw();
-    //             // broke = true;
-    //             break;
-    //         }
-    //     }
-        // if (!broke && mouseHandler.target !== null) {
-        //     graph.vertices.push(new Vertex('new', event.x*100/canvas.width, event.y*100/canvas.height));
-        //     graph.edges.push(new Edge(graph.vertices[graph.vertices.length-1], mouseHandler.target));
-        //     mouseHandler.target.color = "#0857bf";
-        //     mouseHandler.removetarget();
-        //     mode = editModes.MoveVertex;
-        //     addEdge?.classList.toggle("bg-blue-300!")
-        //     draw();
-        // }
-    // }
 })
 
 canvas.addEventListener("mouseup", () => {
@@ -173,6 +151,19 @@ canvas.addEventListener("mousemove", (event: MouseEvent) => {
         mouseHandler.updateTargetCoords({x: event.x, y: event.y}, canvas)
         draw();
     }
+})
+
+document.getElementById("connectedComponents").addEventListener("click", (event: MouseEvent) => {
+    const comps = graph.connectedComponents()
+    for (const componentId in comps) {
+        for (const vertexId in comps[componentId]) {
+            comps[componentId][vertexId].x = 40*(2*componentId+1)/(comps.length);
+            if (comps[componentId].length > 1)
+                comps[componentId][vertexId].x += Math.cos(Math.PI*2*vertexId/comps[componentId].length)*(40/comps.length-1);
+            comps[componentId][vertexId].y = 50 + Math.sin(Math.PI*2*vertexId/comps[componentId].length)*(40/comps.length-1);
+        }
+    }
+    draw();
 })
 
 console.log(graph.adjacencyMatrix());
@@ -188,11 +179,13 @@ const resize = function() {
 resize();
 window.addEventListener('resize', resize);
 
+console.log(graph.connectedComponents())
 draw();
-setTimeout(() => {
-    console.log(graph.vertices);
-    const DFSPath = graph.BFS(graph.vertices[Math.floor(Math.random()*graph.vertices.length)]);
-    DFSPath.forEach((ver, ind) => {setTimeout(() => {ver.color = "#ff0000"; draw(); console.log("Ebal " + ver.name)}, ind*1000);});
-    setTimeout(() => {DFSPath.forEach((v) => v.color = "#0857bf"); draw()}, DFSPath.length*1000);
-}, 10000);
+// setTimeout(() => {
+//     console.log(graph.vertices);
+//     const DFSPath = graph.BFS(graph.vertices[Math.floor(Math.random()*graph.vertices.length)]);
+//     DFSPath.forEach((ver, ind) => {setTimeout(() => {ver.color = "#ff0000"; draw(); console.log("Ebal " + ver.name)}, ind*1000);});
+//     setTimeout(() => {DFSPath.forEach((v) => v.color = "#0857bf"); draw()}, DFSPath.length*1000);
+// }, 10000);
+
 // setInterval(draw, 10);

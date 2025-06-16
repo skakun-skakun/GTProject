@@ -19,7 +19,7 @@ export class Graph {
     adjacencyMatrix() {
         const matrix = [];
         for (const u of this.vertices) {
-            matrix.push(this.vertices.map(v => this.getEdge(u, v) !== undefined));
+            matrix.push(this.vertices.map(v => this.getEdge(u, v) !== null));
         }
         return matrix
     }
@@ -35,49 +35,61 @@ export class Graph {
     DFS(vertex: Vertex) {
         const visited = []
         const path = [vertex];
-        let v: Vertex, broken: boolean = false;
+        let v: Vertex, broken;
         while (path.length > 0) {
-            v = path[path.length - 1];
+            v = path.pop();
             if (!visited.includes(v)) {
                 visited.push(v);
             }
             for (const edge of this.edges) {
                 if (edge.vertices[0] == v && !visited.includes(edge.vertices[1])) {
+                    path.push(v);
                     path.push(edge.vertices[1]);
-                    broken = true;
                     break;
                 } else if (edge.vertices[1] == v && !visited.includes(edge.vertices[0])) {
+                    path.push(v);
                     path.push(edge.vertices[0]);
-                    broken = true;
                     break;
                 }
             }
-            if (!broken) {
-                path.pop();
-            }
-            broken = false;
         }
         return visited;
     }
 
     BFS(vertex: Vertex) {
-        const visited = []
-        const path = [vertex];
+        const visited = [vertex]
+        const path = []
+        const queue = [vertex];
         let v: Vertex;
-        while (path.length > 0) {
-            v = path.pop();
-            if (!visited.includes(v)) {
-                visited.push(v);
-                for (const edge of this.edges) {
-                    if (edge.vertices[0] == v && !visited.includes(edge.vertices[1])) {
-                        path.push(edge.vertices[1]);
-                    } else if (edge.vertices[1] == v && !visited.includes(edge.vertices[0])) {
-                        path.push(edge.vertices[0]);
-                    }
+        while (queue.length > 0) {
+            v = queue.shift();
+            path.push(v);
+            for (const edge of this.edges) {
+                if (edge.vertices[0] === v && !visited.includes(edge.vertices[1])) {
+                    visited.push(edge.vertices[1]);
+                    queue.push(edge.vertices[1]);
+                } else if (edge.vertices[1] === v && !visited.includes(edge.vertices[0])) {
+                    visited.push(edge.vertices[0]);
+                    queue.push(edge.vertices[0]);
                 }
             }
         }
-        return visited;
+        return path;
+    }
+
+    connectedComponents() {
+        if (this.vertices.length === 0)
+            return [[]];
+        const comps = [[...this.vertices]];
+        let component;
+        while (true) {
+            component = this.DFS(comps[0][0])
+            if (component.length === comps[0].length)
+                break;
+            comps[0] = comps[0].filter(v => !component.includes(v));
+            comps.push(component);
+        }
+        return comps
     }
 
     render(canv: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {

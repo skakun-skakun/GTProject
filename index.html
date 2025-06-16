@@ -13,30 +13,39 @@
     before:w-10 before:h-2 before:bg-black before:absolute before:bottom-10 before:left-5 before:translate-y-1/2
     after:h-10 after:w-2 after:bg-black after:absolute after:top-5 after:left-1/2 after:-translate-x-1/2" id="addButton">
     </div> -->
-    <div class="fixed top-1/2 right-5 w-20 h-96 flex flex-col justify-center items-center gap-5 -translate-y-1/2">
+    <div class="fixed top-1/2 right-5 w-20 flex flex-col justify-center items-center gap-5 -translate-y-1/2">
       <div id="addVertex" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
         <div class="w-7 h-7 rounded-full bg-radial from-blue-100 to-blue-500"></div>
-        <p class="self-end">+</p>
+        <p class="self-end select-none">+</p>
       </div>
       <div id="addEdge" class="cursor-pointer w-20 h-20 flex justify-center gap-5 items-center text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
         <div class="h-7">
           <div class="w-2 h-2 rounded-full bg-radial from-blue-100 to-blue-500"></div>
-          <p class="text-xs">/</p>
+          <p class="text-xs select-none">/</p>
           <div class="w-2 h-2 rounded-full bg-radial from-blue-100 to-blue-500"></div>
         </div>
-        <p class="self-end">+</p>
+        <p class="self-end select-none">+</p>
       </div>
       <div id="removeVertex" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
         <div class="w-7 h-7 rounded-full bg-radial from-blue-100 to-blue-500"></div>
-        <p class="self-end">-</p>
+        <p class="self-end select-none">-</p>
       </div>
       <div id="removeEdge" class="cursor-pointer w-20 h-20 flex justify-center gap-5 items-center text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
         <div class="h-7">
           <div class="w-2 h-2 rounded-full bg-radial from-blue-100 to-blue-500"></div>
-          <p class="text-xs">/</p>
+          <p class="text-xs select-none">/</p>
           <div class="w-2 h-2 rounded-full bg-radial from-blue-100 to-blue-500"></div>
         </div>
-        <p class="self-end">-</p>
+        <p class="self-end select-none">-</p>
+      </div>
+      <div id="bfs" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <p class="select-none">BFS</p>
+      </div>
+      <div id="dfs" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <p class="select-none">DFS</p>
+      </div>
+      <div id="connectedComponents" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <p class="select-none text-sm">Comps</p>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
