@@ -41,5 +41,7 @@ export class Vertex {
         ctx.arc(this.absoluteX(canv), this.absoluteY(canv), this.radius, 0, Math.PI*2);
         ctx.closePath();
         ctx.fill();
+        ctx.fillStyle = "#000000"
+        ctx.fillText(this.name, this.absoluteX(canv), this.absoluteY(canv));
     }
 }

@@ -94,6 +94,9 @@ export class Graph {
 
     render(canv: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         ctx.shadowColor = "transparent";
+        ctx.font = '12px arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         this.edges.forEach((e:Edge) => {e.render(canv, ctx)});
         ctx.shadowColor = '#ffffff';
         ctx.shadowBlur = 20;

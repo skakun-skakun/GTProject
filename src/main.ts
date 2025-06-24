@@ -76,7 +76,7 @@ for (const buttonId in buttons) {
 
 canvas.addEventListener("mousedown", (event: MouseEvent) => {
     if (mode === editModes.CreateVertex) {
-        graph.vertices.push(new Vertex('new'+graph.vertices.length, event.x*100/canvas.width, event.y*100/canvas.height));
+        graph.vertices.push(new Vertex('v'+(graph.vertices.length+1), event.x*100/canvas.width, event.y*100/canvas.height));
         draw();
         return;
     }
