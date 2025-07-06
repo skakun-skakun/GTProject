@@ -46,6 +46,9 @@ const draw = function () {
 }
 
 
+const mobileCheck = () => /android|ipad|iphone|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent || navigator.vendor || window.opera);
+
+
 for (const buttonId in buttons) {
     buttons[buttonId].addEventListener("click", () => {
         if (mouseHandler.target !== null)
@@ -63,15 +66,20 @@ for (const buttonId in buttons) {
     });
 }
 
-canvas.addEventListener("mousedown", (event: MouseEvent) => {
+function onMouseDown(event) {
     if (isAnimated) return;
-    if (mode === editModes.CreateVertex) {
-        graph.vertices.unshift(new Vertex(graph.possibleVertexName(), event.x, event.y));
+    if (mode === editModes.CreateVertex && (event.x == undefined || !mobileCheck())) {
+        if (event.x == undefined)
+            graph.vertices.unshift(new Vertex(graph.possibleVertexName(), event.touches[0].clientX, event.touches[0].clientY));
+        else if (!mobileCheck())
+            graph.vertices.unshift(new Vertex(graph.possibleVertexName(), event.x, event.y));
         draw();
         return;
     }
     for (const v of graph.vertices) {
-        if (v.doesIntersect(event.x, event.y)) {
+        if ((event.x != undefined && !mobileCheck() && v.doesIntersect(event.x, event.y)) ||
+            (event.x == undefined && v.doesIntersect(event.touches[0].clientX, event.touches[0].clientY))) {
+            console.log(event)
             switch (mode) {
                 case editModes.Move:
                     mouseHandler.setTarget(v);
@@ -160,33 +168,54 @@ canvas.addEventListener("mousedown", (event: MouseEvent) => {
         }
     }
     if (mode === editModes.Move && mouseHandler.target === null) mouseHandler.target = true;
-})
+}
 
-canvas.addEventListener("mouseup", () => {
+
+function onMouseUp() {
     if (mode === editModes.Move) {
         mouseHandler.removeTarget();
         mouseHandler.memoryCoords.x = null;
         mouseHandler.memoryCoords.y = null;
     }
-})
+}
 
-canvas.addEventListener("mousemove", (event: MouseEvent) => {
+
+function onMouseMove(event) {
     if (mode === editModes.Move && !isAnimated) {
         if (mouseHandler.target !== null) {
             if (mouseHandler.target == true) {
                 if (mouseHandler.memoryCoords.x != null) {
                     for (const v of graph.vertices) {
-                        v.x += event.x - mouseHandler.memoryCoords.x;
-                        v.y += event.y - mouseHandler.memoryCoords.y;
+                        if (event.x != undefined) {
+                            v.x += event.x - mouseHandler.memoryCoords.x;
+                            v.y += event.y - mouseHandler.memoryCoords.y
+                        } else {
+                            v.x += event.touches[0].clientX - mouseHandler.memoryCoords.x;
+                            v.y += event.touches[0].clientY - mouseHandler.memoryCoords.y
+                        }
                     }
                 }
-                mouseHandler.memoryCoords.x = event.x;
-                mouseHandler.memoryCoords.y = event.y;
-            } else mouseHandler.updateTargetCoords({x: event.x, y: event.y});
+                if (event.x != undefined) {
+                    mouseHandler.memoryCoords.x = event.x;
+                    mouseHandler.memoryCoords.y = event.y;
+                } else {
+                    mouseHandler.memoryCoords.x = event.touches[0].clientX;
+                    mouseHandler.memoryCoords.y = event.touches[0].clientY;
+                }
+            } else if (event.x != undefined) mouseHandler.updateTargetCoords({x: event.x, y: event.y})
+            else mouseHandler.updateTargetCoords({x: event.touches[0].clientX, y: event.touches[0].clientY});
         }
         // draw();
     }
-})
+}
+
+
+canvas.addEventListener("mousedown", onMouseDown);
+canvas.addEventListener("touchstart", onMouseDown);
+canvas.addEventListener("mouseup", onMouseUp);
+canvas.addEventListener("touchend", onMouseUp);
+canvas.addEventListener("mousemove", onMouseMove);
+canvas.addEventListener("touchmove", onMouseMove);
 
 document.getElementById("connectedComponents").addEventListener("click", () => {
     if (isAnimated) return;
@@ -194,7 +223,7 @@ document.getElementById("connectedComponents").addEventListener("click", () => {
     for (const componentId in comps) {
         for (const vertexId in comps[componentId]) {
             const tween = comps[componentId][vertexId].animateMovement((40*(2*componentId+1)/(comps.length)+(Math.cos(Math.PI*2*vertexId/comps[componentId].length)*(comps[componentId].length > 1))*(40/comps.length-1))*canvas.width/100,
-                (50 + Math.sin(Math.PI*2*vertexId/comps[componentId].length)*(40/comps.length-1))*canvas.height/100)
+                (50 + Math.sin(Math.PI*2*vertexId/comps[componentId].length)*(30/comps.length-1))*canvas.height/100)
                 .onStart(() => {isAnimated = true;})
                 .onComplete(() => {tweens = tweens.filter((tw) => tw !== tween); isAnimated = false;});
             tweens.push(tween);
@@ -212,7 +241,7 @@ document.getElementById("bipartition").addEventListener("click", () => {
         if (bipart == -1) {
             for (const vertexId in comps[componentId]) {
                 const tween = comps[componentId][vertexId].animateMovement((40*(2*componentId+1)/(comps.length)+(Math.cos(Math.PI*2*vertexId/comps[componentId].length)*(comps[componentId].length > 1))*(40/comps.length-1))*canvas.width/100,
-                    (50 + Math.sin(Math.PI*2*vertexId/comps[componentId].length)*(40/comps.length-1))*canvas.height/100)
+                    (50 + Math.sin(Math.PI*2*vertexId/comps[componentId].length)*(30/comps.length-1))*canvas.height/100)
                     .onStart(() => {isAnimated = true;})
                     .onComplete(() => {tweens = tweens.filter((tw) => tw !== tween); isAnimated = false;});
                 tweens.push(tween);
@@ -221,7 +250,7 @@ document.getElementById("bipartition").addEventListener("click", () => {
         } else {
             for (const vertexId in bipart[0]) {
                 const tween = bipart[0][vertexId].animateMovement((40 * (2 * componentId + 1) / (comps.length)-(40/comps.length-1)) * canvas.width / 100,
-                    (50 + 60*(vertexId*1+1-(bipart[0].length+1)/2)/(bipart[0].length-0.9999)) * canvas.height / 100)
+                    (50 + 40*(vertexId*1+1-(bipart[0].length+1)/2)/(bipart[0].length-0.9999)) * canvas.height / 100)
                     .onStart(() => {
                         isAnimated = true;
                     })
@@ -234,7 +263,7 @@ document.getElementById("bipartition").addEventListener("click", () => {
             }
             for (const vertexId in bipart[1]) {
                 const tween = bipart[1][vertexId].animateMovement((40 * (2 * componentId + 1) / (comps.length) + (40/comps.length-1)) * canvas.width / 100,
-                    (50 + 60*(vertexId*1+1-(bipart[1].length+1)/2)/(bipart[1].length-0.9999)) * canvas.height / 100)
+                    (50 + 40*(vertexId*1+1-(bipart[1].length+1)/2)/(bipart[1].length-0.9999)) * canvas.height / 100)
                     .onStart(() => {
                         isAnimated = true;
                     })

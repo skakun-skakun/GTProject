@@ -4,59 +4,59 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/src/style.css" rel="stylesheet">
+    <link href="./src/style.css" rel="stylesheet">
     <title>Graphy</title>
   </head>
   <body>
     <canvas class="bg-black g-[url(/stars-in-sky-dark-4480x2520-15485.jpg)] bg-cover" id="mainCanvas"></canvas>
-    <!-- <div class="cursor-pointer fixed bottom-5 right-5 w-20 h-20 bg-white rounded-full
+    <!-- <div class="cursor-pointer fixed bottom-5 right-5 md:w-20 md:h-20 max-md:w-14 max-md:h-14 bg-white rounded-full
     before:w-10 before:h-2 before:bg-black before:absolute before:bottom-10 before:left-5 before:translate-y-1/2
     after:h-10 after:w-2 after:bg-black after:absolute after:top-5 after:left-1/2 after:-translate-x-1/2" id="addButton">
     </div> -->
-    <div class="fixed top-1/2 right-5 w-48 flex flex-wrap justify-center items-center gap-5 -translate-y-1/2">
-      <div id="addVertex" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <div class="w-7 h-7 rounded-full bg-radial from-blue-100 to-blue-500"></div>
+    <div class="fixed md:top-1/2 md:right-5 w-48 flex flex-wrap justify-center items-center gap-5 md:-translate-y-1/2 max-md:flex-col max-md:w-full max-md:h-36 max-md:bottom-0">
+      <div id="addVertex" class="relative cursor-pointer md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <div class="md:w-7 md:h-7 max-md:w-5 max-md:h-5 rounded-full bg-radial from-blue-100 to-blue-500"></div>
         <p class="self-end select-none">+</p>
       </div>
-      <div id="addEdge" class="cursor-pointer w-20 h-20 flex justify-center gap-5 items-center text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <div class="h-7">
-          <div class="w-2 h-2 rounded-full bg-radial from-blue-100 to-blue-500"></div>
+      <div id="addEdge" class="cursor-pointe md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center gap-5 items-center text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <div class="md:h-7 max-md:h-5">
+          <div class="md:w-2 md:h-2 max-md:w-1.5 max-md:h-1.5 rounded-full bg-radial from-blue-100 to-blue-500"></div>
           <p class="text-xs select-none">/</p>
-          <div class="w-2 h-2 rounded-full bg-radial from-blue-100 to-blue-500"></div>
+          <div class="md:w-2 md:h-2 max-md:w-1.5 max-md:h-1.5 rounded-full bg-radial from-blue-100 to-blue-500"></div>
         </div>
         <p class="self-end select-none">+</p>
       </div>
-      <div id="removeVertex" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <div class="w-7 h-7 rounded-full bg-radial from-blue-100 to-blue-500"></div>
+      <div id="removeVertex" class="relative cursor-pointer md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <div class="md:w-7 md:h-7 max-md:w-5 max-md:h-5 rounded-full bg-radial from-blue-100 to-blue-500"></div>
         <p class="self-end select-none">-</p>
       </div>
-      <div id="removeEdge" class="cursor-pointer w-20 h-20 flex justify-center gap-5 items-center text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <div class="h-7">
-          <div class="w-2 h-2 rounded-full bg-radial from-blue-100 to-blue-500"></div>
+      <div id="removeEdge" class="cursor-pointer md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center gap-5 items-center text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <div class="md:h-7 max-md:h-5">
+          <div class="md:w-2 md:h-2 max-md:w-1.5 max-md:h-1.5 rounded-full bg-radial from-blue-100 to-blue-500"></div>
           <p class="text-xs select-none">/</p>
-          <div class="w-2 h-2 rounded-full bg-radial from-blue-100 to-blue-500"></div>
+          <div class="md:w-2 md:h-2 max-md:w-1.5 max-md:h-1.5 rounded-full bg-radial from-blue-100 to-blue-500"></div>
         </div>
         <p class="self-end select-none">-</p>
       </div>
-      <div id="bfs" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <p class="select-none">BFS</p>
+      <div id="bfs" class="relative cursor-pointer md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <p class="select-none max-md:text-sm">BFS</p>
       </div>
-      <div id="dfs" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <p class="select-none">DFS</p>
+      <div id="dfs" class="relative cursor-pointer md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <p class="select-none max-md:text-sm">DFS</p>
       </div>
-      <div id="connectedComponents" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <p class="select-none text-sm">Comps</p>
+      <div id="connectedComponents" class="relative cursor-pointer md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <p class="select-none md:text-sm max-md:text-xs">Comps</p>
       </div>
-      <div id="bipartition" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <p class="select-none text-sm">Bipartition</p>
+      <div id="bipartition" class="relative cursor-pointer md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <p class="select-none md:text-sm max-md:text-xs">Bipartition</p>
       </div>
-      <div id="perAndEcc" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <p class="select-none">P&S</p>
+      <div id="perAndEcc" class="relative cursor-pointer md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <p class="select-none max-md:text-sm">P&S</p>
       </div>
-      <div id="coloring" class="relative cursor-pointer w-20 h-20 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
-        <p class="select-none text-sm">Prop color</p>
+      <div id="coloring" class="relative cursor-pointer md:w-20 md:h-20 max-md:w-14 max-md:h-14 flex justify-center items-center gap-2 text-black bg-neutral-100 transition-colors ease-in-out rounded-full text-3xl">
+        <p class="select-none md:text-sm max-md:text-xs text-center">Prop color</p>
       </div>
     </div>
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
