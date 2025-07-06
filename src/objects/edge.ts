@@ -10,8 +10,8 @@ export class Edge {
 
     render(canv: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
-        ctx.moveTo(this.vertices[0].x*canv.width/100, this.vertices[0].y*canv.height/100);
-        ctx.lineTo(this.vertices[1].x*canv.width/100, this.vertices[1].y*canv.height/100);
+        ctx.moveTo(this.vertices[0].x, this.vertices[0].y);
+        ctx.lineTo(this.vertices[1].x, this.vertices[1].y);
         ctx.strokeStyle = "#ffffff";
         ctx.lineWidth = 3;
         ctx.stroke();
