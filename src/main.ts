@@ -68,6 +68,7 @@ for (const buttonId in buttons) {
 
 function onMouseDown(event) {
     if (isAnimated) return;
+    if (mobileCheck()) event.preventDefault();
     if (mode === editModes.CreateVertex && (event.x == undefined || !mobileCheck())) {
         if (event.x == undefined)
             graph.vertices.unshift(new Vertex(graph.possibleVertexName(), event.touches[0].clientX, event.touches[0].clientY));
@@ -181,6 +182,7 @@ function onMouseUp() {
 
 
 function onMouseMove(event) {
+    if (mobileCheck()) event.preventDefault();
     if (mode === editModes.Move && !isAnimated) {
         if (mouseHandler.target !== null) {
             if (mouseHandler.target == true) {
