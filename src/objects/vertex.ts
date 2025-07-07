@@ -6,13 +6,14 @@ export class Vertex {
     public y: number;
     public radius: number;
     public name: string;
-    public color: string;
+    public color: string; secondColor: string;
     constructor(name: string, x: number, y: number) {
         this.x = x;
         this.y = y;
         this.radius = 20;
         this.name = name;
         this.color = "#0857bf";
+        this.secondColor = "lightblue"
     }
 
     doesIntersect(x: number, y: number): boolean {
@@ -30,7 +31,7 @@ export class Vertex {
             this.x, this.y, this.radius/2,
             this.x, this.y, this.radius);
         ctx.fillStyle = grad;
-        grad.addColorStop(0,"lightblue");
+        grad.addColorStop(0,this.secondColor);
         grad.addColorStop(1,this.color);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);

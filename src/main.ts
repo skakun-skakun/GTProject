@@ -51,9 +51,11 @@ const mobileCheck = () => /android|ipad|iphone|ipod|blackberry|iemobile|opera mi
 
 for (const buttonId in buttons) {
     buttons[buttonId].addEventListener("click", () => {
-        if (mouseHandler.target !== null)
+        if (mouseHandler.target !== null) {
             mouseHandler.target.color = "#0857bf";
+            mouseHandler.target.secondColor = "lightblue";
             mouseHandler.removeTarget();
+        }
         if (buttons[buttonId].classList.contains("bg-blue-300!")) {
             buttons[buttonId].classList.remove("bg-blue-300!");
             mode = 0;
@@ -94,6 +96,7 @@ function onMouseDown(event) {
                             // mode = editModes.Move;
                         }
                         mouseHandler.target.color = "#0857bf";
+                        mouseHandler.target.secondColor = "lightblue";
                         mouseHandler.removeTarget();
                     } else {
                         mouseHandler.setTarget(v);
@@ -113,6 +116,7 @@ function onMouseDown(event) {
                             graph.edges = graph.edges.filter(edge => !edge.vertices.includes(v) || !edge.vertices.includes(mouseHandler.target));
                         }
                         mouseHandler.target.color = "#0857bf";
+                        mouseHandler.target.secondColor = "lightblue";
                         mouseHandler.removeTarget();
                     } else {
                         mouseHandler.setTarget(v);
@@ -147,16 +151,14 @@ function onMouseDown(event) {
                         }
                     }
                     if (broken) {
-                        for (const v of comp) {
-                            v.color = "#0857bf";
-                        }
+                        comp.forEach(v => {v.color = "#0857bf"; v.secondColor = "lightblue";})
                     } else if (!dontTouchThisComponent) {
                         const periphery = graph.periphery(comp), center = graph.center(comp);
                         for (const v of periphery) {
                             v.color = "#b714ff"
                         }
                         for (const v of center) {
-                            v.color = "#dc6a2c"
+                            v.secondColor = "#dc6a2c"
                         }
                     }
                     break;
@@ -288,6 +290,7 @@ document.getElementById("coloring").addEventListener("click", () => {
         if (resetColor || v.color.includes('hsl')) {
             resetColor = true;
             v.color = "#0857bf";
+            v.secondColor = "lightblue";
         }
     })
     if (!resetColor) {
@@ -295,6 +298,7 @@ document.getElementById("coloring").addEventListener("click", () => {
         for (const colorId in propColor) {
             for (const vertexId in propColor[colorId]) {
                 propColor[colorId][vertexId].color = `hsl(${300 * colorId / (propColor.length-0.999)}, 100%, 50%)`;
+                propColor[colorId][vertexId].secondColor = 'lightblue';
             }
         }
     }
